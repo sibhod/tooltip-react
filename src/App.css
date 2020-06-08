@@ -14,6 +14,8 @@
   border: solid 1px white;
   overflow-y: scroll;
   padding: 20px;
+  /* Offset the scrollbar width for an even padding */
+  padding-right: 10px;
 }
 
 .list-container > .list-item {
@@ -24,6 +26,7 @@
   height: 60px;
   border: solid 1px white;
   background-color: #696969;
+  cursor: pointer;
 }
 
 .list-container > .list-item:not(:last-of-type) {

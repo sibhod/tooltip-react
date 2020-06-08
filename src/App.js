@@ -1,23 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
+import debounce from "lodash/debounce";
 import ListItem from "./components/ListItem";
 
 const ITEMS = [
-  { name: "A", tooltip: "Alpha" },
-  { name: "B", tooltip: "Bravo" },
-  { name: "C", tooltip: "Charlie" },
-  { name: "D", tooltip: "Delta" },
-  { name: "E", tooltip: "Echo" },
-  { name: "F", tooltip: "Foxtrop" },
-  { name: "G", tooltip: "Golf" },
+  { title: "A", tooltip: "Alpha" },
+  { title: "B", tooltip: "Bravo" },
+  { title: "C", tooltip: "Charlie" },
+  { title: "D", tooltip: "Delta" },
+  { title: "E", tooltip: "Echo" },
+  { title: "F", tooltip: "Foxtrop" },
+  { title: "G", tooltip: "Golf" },
 ];
 
+const SCROLL_DEBOUNCE_DELAY = 200;
+
 function App() {
+  const [hideTooltip, setHideTooltip] = useState(false);
+
+  const handleDebouncedScroll = debounce(
+    () => setHideTooltip(false),
+    SCROLL_DEBOUNCE_DELAY
+  );
+
+  const handleOnScroll = () => {
+    setHideTooltip(true);
+    handleDebouncedScroll();
+  };
+
   return (
     <div className="app">
-      <div className="list-container">
-        {ITEMS.map(({ name, tooltip }) => (
-          <ListItem key={name} name={name} tooltip={tooltip} />
+      <div className="list-container" onScroll={handleOnScroll}>
+        {ITEMS.map(({ title, tooltip }) => (
+          <ListItem
+            key={title}
+            hideTooltip={hideTooltip}
+            title={title}
+            tooltip={tooltip}
+          />
         ))}
       </div>
     </div>

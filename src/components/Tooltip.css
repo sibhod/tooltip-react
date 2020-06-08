@@ -1,7 +1,31 @@
 .tooltip {
   position: absolute;
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: 0;
+  }
+}
+
+.tooltip-content {
+  position: relative;
+  top: -16px;
+  left: 10px;
   color: white;
   border: solid 1px white;
   background-color: #282c34;
   padding: 6px;
+
+  animation: fadeIn ease 0.15s;
+  -webkit-animation: fadeIn ease 0.15s;
+  -moz-animation: fadeIn ease 0.15s;
+  -o-animation: fadeIn ease 0.15s;
+  -ms-animation: fadeIn ease 0.15s;
 }

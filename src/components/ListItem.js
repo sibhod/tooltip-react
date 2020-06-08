@@ -3,18 +3,19 @@ import PropTypes from "prop-types";
 import Tooltip from "./Tooltip";
 
 const propTypes = {
-  name: PropTypes.string.isRequired,
+  hideTooltip: PropTypes.bool,
+  title: PropTypes.string.isRequired,
   tooltip: PropTypes.string.isRequired,
 };
 
-const ListItem = ({ name, tooltip }) => {
+const ListItem = ({ hideTooltip, title, tooltip }) => {
   const anchorRef = useRef(null);
   return (
     <>
       <div className="list-item" ref={anchorRef}>
-        {name}
+        {title}
       </div>
-      <Tooltip anchorRef={anchorRef} title={tooltip} />
+      <Tooltip anchorRef={anchorRef} hidden={hideTooltip} title={tooltip} />
     </>
   );
 };

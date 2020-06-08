@@ -1,15 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 import "./Tooltip.css";
 
 const propTypes = {
   anchorRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  hidden: PropTypes.bool,
   title: PropTypes.string.isRequired,
 };
 
-const Tooltip = ({ anchorRef, title }) => {
+const Tooltip = ({ anchorRef, hidden, title }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [position, setPosition] = useState({ left: "0px", top: "0px" });
+  const containerRef = useRef(document.createElement("div"));
+
+  const setPositionFromBounds = (bounds) => {
+    setPosition({
+      left: `${bounds.left + bounds.width}px`,
+      top: `${bounds.top + bounds.height * 0.5}px`,
+    });
+  };
+
+  useEffect(() => {
+    const containerEl = containerRef.current;
+    containerEl && document.body.appendChild(containerEl);
+    return () => containerEl && document.body.removeChild(containerEl);
+  });
 
   useEffect(() => {
     const handleMouseOver = () => setIsHovering(true);
@@ -21,11 +37,7 @@ const Tooltip = ({ anchorRef, title }) => {
       anchorElement.addEventListener("mouseleave", handleMouseOut);
 
       const bounds = anchorElement.getBoundingClientRect();
-
-      setPosition({
-        left: `${bounds.left + bounds.width}px`,
-        top: `${bounds.top + bounds.height * 0.5}px`,
-      });
+      setPositionFromBounds(bounds);
     }
 
     return () => {
@@ -36,11 +48,22 @@ const Tooltip = ({ anchorRef, title }) => {
     };
   }, [anchorRef]);
 
-  return isHovering ? (
+  // Update position when isHovering
+  useEffect(() => {
+    if (isHovering && anchorRef.current) {
+      setPositionFromBounds(anchorRef.current.getBoundingClientRect());
+    }
+  }, [isHovering, anchorRef]);
+
+  const renderTooltip = () => (
     <div style={position} className="tooltip">
-      {title}
+      <div className="tooltip-content">{title}</div>
     </div>
-  ) : null;
+  );
+
+  return isHovering && !hidden
+    ? createPortal(renderTooltip(), containerRef.current)
+    : null;
 };
 
 Tooltip.propTypes = propTypes;
