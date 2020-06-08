@@ -53,7 +53,7 @@ const Tooltip = ({ anchorRef, hidden, title }) => {
     if (isHovering && anchorRef.current) {
       setPositionFromBounds(anchorRef.current.getBoundingClientRect());
     }
-  }, [isHovering, anchorRef]);
+  }, [hidden, isHovering, anchorRef]);
 
   const renderTooltip = () => (
     <div style={position} className="tooltip">
