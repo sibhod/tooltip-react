@@ -1,4 +1,7 @@
 .tooltip {
   position: absolute;
-  border: solid 1px black;
+  color: white;
+  border: solid 1px white;
+  background-color: #282c34;
+  padding: 6px;
 }

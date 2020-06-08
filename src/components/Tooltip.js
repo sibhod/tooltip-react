@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import "./Tooltip.css";
 
-const Tooltip = ({ anchorRef }) => {
+const propTypes = {
+  anchorRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  title: PropTypes.string.isRequired,
+};
+
+const Tooltip = ({ anchorRef, title }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [position, setPosition] = useState({ left: "0px", top: "0px" });
 
@@ -21,19 +27,22 @@ const Tooltip = ({ anchorRef }) => {
         top: `${bounds.top + bounds.height * 0.5}px`,
       });
     }
+
     return () => {
       if (anchorElement) {
-        anchorElement.removeEventListenr("mouseover", handleMouseOver);
-        anchorElement.removeEventListenr("mouseleave", handleMouseOut);
+        anchorElement.removeEventListener("mouseover", handleMouseOver);
+        anchorElement.removeEventListener("mouseleave", handleMouseOut);
       }
     };
   }, [anchorRef]);
 
   return isHovering ? (
     <div style={position} className="tooltip">
-      ToolTip
+      {title}
     </div>
   ) : null;
 };
+
+Tooltip.propTypes = propTypes;
 
 export default Tooltip;
