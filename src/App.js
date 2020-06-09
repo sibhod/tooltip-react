@@ -9,7 +9,7 @@ const ITEMS = [
   { title: "C", tooltip: "Charlie" },
   { title: "D", tooltip: "Delta" },
   { title: "E", tooltip: "Echo" },
-  { title: "F", tooltip: "Foxtrop" },
+  { title: "F", tooltip: "Foxtrot" },
   { title: "G", tooltip: "Golf" },
 ];
 
